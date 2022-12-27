@@ -171,6 +171,11 @@ class LayoutSettings(ClusterableModel, BaseSetting):
             heading=_("Site Navbars"),
         ),
         InlinePanel(
+            "site_navbar2",
+            help_text=_("Choose one or more navbars for your site."),
+            heading=_("Site Navbars Line 2"),
+        ),
+        InlinePanel(
             "site_footer",
             help_text=_("Choose one or more footers for your site."),
             heading=_("Site Footers"),
