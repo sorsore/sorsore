@@ -244,7 +244,21 @@ class NavbarOrderable(Orderable, models.Model):
 
     panels = [FieldPanel("navbar")]
 
+class Navbar2Orderable(Orderable, models.Model):
+    navbar_chooser = ParentalKey(
+        LayoutSettings,
+        related_name="site_navbar2",
+        verbose_name=_("Site Navbars line 2"),
+    )
+    navbar2 = models.ForeignKey(
+        Navbar,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
 
+    panels = [FieldPanel("navbar2")]
+    
 class FooterOrderable(Orderable, models.Model):
     footer_chooser = ParentalKey(
         LayoutSettings,
