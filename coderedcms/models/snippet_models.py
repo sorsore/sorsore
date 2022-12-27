@@ -245,6 +245,12 @@ class Navbar(models.Model):
         blank=True,
         use_json_field=True,
     )
+    content = CoderedStreamField(
+        HTML_STREAMBLOCKS,
+        blank=True,
+        use_json_field=True,
+    )
+
 
     panels = [
         FieldPanel("name"),
@@ -256,6 +262,7 @@ class Navbar(models.Model):
             heading=_("Attributes"),
         ),
         FieldPanel("menu_items"),
+        FieldPanel("content"),
     ]
 
     def __str__(self):
