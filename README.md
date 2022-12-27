@@ -1,4 +1,4 @@
-# Wagtail CRX (CodeRed Extensions)
+# Wagtail CRX (CodeRed Extensions) + PDEI Extenstions!
 
 The professional WordPress alternative for building marketing websites with
 Wagtail and Bootstrap.
