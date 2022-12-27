@@ -94,6 +94,16 @@ def get_navbars(context) -> "QuerySet[Navbar]":
 
 
 @register.simple_tag(takes_context=True)
+def get_navbars2(context) -> "QuerySet[Navbar]":
+    layout = LayoutSettings.for_request(context["request"])
+    navbarorderables = layout.site_navbar2.all()
+    navbars = Navbar.objects.filter(
+        navbar2orderable__in=navbar2orderables
+    ).order_by("navbar2orderable__sort_order")
+    return navbars
+
+
+@register.simple_tag(takes_context=True)
 def get_footers(context) -> "QuerySet[Footer]":
     layout = LayoutSettings.for_request(context["request"])
     footerorderables = layout.site_footer.all()
