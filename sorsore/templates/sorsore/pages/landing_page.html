@@ -1,0 +1,9 @@
+{% extends "sorsore/pages/web_page_notitle.html" %}
+{% load wagtailcore_tags themes_tags %}
+
+{% for block in body %}
+
+    {% include_block block %}
+
+{% endfor %}
+

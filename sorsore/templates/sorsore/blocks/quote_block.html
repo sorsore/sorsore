@@ -1,0 +1,10 @@
+{% block block_render %}
+<figure class="{{self.settings.custom_css_class}}" {% if self.settings.custom_id %}id="{{self.settings.custom_id}}"{% endif %}>
+<blockquote class="blockquote">
+  <p>{{self.text}}</p>
+</blockquote>
+{% if self.author %}
+<figcaption class="blockquote-footer">{{self.author}}</figcaption>
+{% endif %}
+</figure>
+{% endblock %}

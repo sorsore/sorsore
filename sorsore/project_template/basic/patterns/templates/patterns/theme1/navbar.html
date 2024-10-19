@@ -1,0 +1,99 @@
+{% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags sorsore_tags i18n %}
+{% load static %}
+
+
+{% block stylesheets %}
+<!-- Option 1: Include in HTML -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+{% endblock %}
+
+
+{% comment %} {% if not settings.sorsore.LayoutSettings.navbar_wrapper_fluid %}
+<div class="container">
+{% endif %} {% endcomment %}
+<nav class = "navbar navbar-expand-lg navbar-light bg-white py-4">
+
+    {% if not settings.sorsore.LayoutSettings.navbar_content_fluid %}
+    <div class="container">
+    {% endif %}
+
+    <div class="col-1 order-lg-0">
+        <a class = "navbar-brand d-flex justify-content-between align-items-center" href = "/">
+            {% if settings.sorsore.LayoutSettings.logo %}
+            {% image settings.sorsore.LayoutSettings.logo original format-webp as logo %}
+            <img class="img-fluid" src="{{logo.url}}" alt="{{site.site_name}}" />
+            {% else %}
+            {{site.site_name}}
+            {% endif %}
+        </a>
+    </div>
+
+        <button class = "col-10 navbar-toggler border-0" type = "button" data-bs-toggle = "collapse" data-bs-target = "#navMenu">
+            <span class = "navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class = "collapse navbar-collapse order-lg-1" id = "navMenu">
+        {% get_navbars as navbars %}
+        {% for navbar in navbars %}
+        <ul class = "navbar-nav mx-auto text-center"
+                {% if navbar.custom_id %}id="{{navbar.custom_id}}"{% endif %} >
+                {% for item in navbar.menu_items %}
+                    {% include_block item with liclass="nav-item px-2 py-2" aclass="nav-link text-uppercase text-dark" ga_event_category="Navbar" %}
+                {% endfor %}
+
+                {% if user.is_authenticated %}
+                <li class = "nav-item px-2 py-2 border-0">
+                    <a class = "nav-link text-uppercase text-primary" href = "#">@{{ user.username }}</a>
+                </li>
+                {% else %}
+                <li class = "nav-item px-2 py-2 border-0">
+                    <a class = "btn btn-primary text-uppercase text-dark" href = "/admin">login</a>
+                </li>
+                <li class = "nav-item px-2 py-2 border-0">
+                    <a class = "btn btn-primary text-uppercase text-dark" href = "#">signup</a>
+                </li>
+                {% endif %}
+        </ul>
+        {% endfor %}
+
+        <div class="col-1 order-lg-2">
+            <a href="#">
+          
+                <i class="bi bi-bag-fill text-dark fs-4 fa-bold">
+                    <i class="position-absolute translate-middle badge rounded-circle bg-danger fs-6">{{cart|length}}</i>
+                </i>
+            </a>
+        </div>
+
+        {% if settings.sorsore.LayoutSettings.navbar_search %}
+            <form class="ml-auto form-inline" action="{% url 'crx_search' %}" method="GET">
+                {% load django_bootstrap5 %}
+                {% get_searchform request as form %}
+                {% bootstrap_form form layout='inline' %}
+                <div class="form-group">
+                    <button class="btn btn-outline-primary ml-2" type="submit">{% trans 'Search' %}</button>
+                </div>
+            </form>
+        {% endif %}
+
+        </div>
+
+    {% if not settings.sorsore.LayoutSettings.navbar_content_fluid %}
+    </div><!-- /.container -->
+    {% endif %}
+
+</nav>
+
+{% comment %} {% if not settings.sorsore.LayoutSettings.navbar_wrapper_fluid %}
+</div><!-- /.container -->
+{% endif %} {% endcomment %}
+
+{# Navbar offset #}
+{% if settings.sorsore.LayoutSettings.navbar_fixed %}
+   {% if settings.sorsore.LayoutSettings.logo %}
+   <div class="{{settings.sorsore.LayoutSettings.navbar_format}}-fixed-img-offset {{settings.sorsore.LayoutSettings.navbar_collapse_mode}}"></div>
+   {% else %}
+   <div class="{{settings.sorsore.LayoutSettings.navbar_format}}-fixed-offset {{settings.sorsore.LayoutSettings.navbar_collapse_mode}}"></div>
+   {% endif %}
+{% endif %}

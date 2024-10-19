@@ -1,6 +1,6 @@
 [run]
 branch = True
-source = coderedcms
+source = sorsore
 
 [report]
 exclude_lines =

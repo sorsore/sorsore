@@ -1,0 +1,29 @@
+{% extends "sorsore/pages/web_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags sorsore_tags %}
+{% block content_body %}
+<div class="container">
+  <div class="row">
+    {% if page.address or page.phone_number or page.website %}
+    <div class="card address-card text-center">
+      <div class="card-body">
+        {% if page.address %}
+        <p>{{ page.address|linebreaks }}</p>
+        {% endif %}
+        {% if page.phone_number %}
+        <p>{{ page.phone_number }}</p>
+        {% endif %}
+        {% if page.website %}
+        <p><a href="{{ page.website }}">Website</a></p>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="row mb-5">
+    {{ block.super }}
+  </div>
+  {% block map %}
+  {% include "sorsore/includes/iframe_gmap.html" with address=page.address %}
+  {% endblock %}
+</div>
+{% endblock %}

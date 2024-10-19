@@ -1,0 +1,45 @@
+{% extends "sorsore/blocks/base_block.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% block block_render %}
+<div id="carousel-{{self.carousel.id}}" class="carousel slide" data-bs-ride="carousel">
+  {% if self.carousel.show_indicators %}
+  <div class="carousel-indicators">
+    {% for item in self.carousel.carousel_slides.all %}
+    <button type="button" data-bs-target="#carousel-{{self.carousel.id}}" data-bs-slide-to="{{forloop.counter0}}" {% if forloop.counter0 == 0 %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter1 }}"></button>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="carousel-inner">
+    {% for item in self.carousel.carousel_slides.all %}
+    {% block carousel_slide %}
+    <div
+      class="carousel-item {% if not item.image %}no-img{% endif %} {% if forloop.counter0 == 0 %}active{% endif %} {{item.custom_css_class}}"
+      {% if item.custom_id %}id="#{{item.custom_id}}"{% endif %}
+      style="{% if item.background_color %}background-color: {{item.background_color}};{% endif %}">
+      {% block carousel_slide_image %}
+      {% if item.image %}
+      {% image item.image fill-1600x900 format-webp preserve-svg as carouselimage %}
+      <img class="d-block w-100" src="{{carouselimage.url}}" alt="{{carouselimage.image.title}}">
+      {% endif %}
+      {% endblock %}
+      <div class="carousel-caption d-none d-md-block">
+        {% for block in item.content %}
+        {% include_block block %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endblock %}
+    {% endfor %}
+  </div>
+  {% if self.carousel.show_controls %}
+  <button class="carousel-control-prev" data-bs-target="#carousel-{{self.carousel.id}}" type="button" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" data-bs-target="#carousel-{{self.carousel.id}}" type="button" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+  {% endif %}
+</div>
+{% endblock %}

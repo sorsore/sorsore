@@ -1,0 +1,51 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% load static %}
+
+{% if value.section_type == "cover_image" %}
+{% image value.image scale-100 as img %}
+
+<style>
+
+#offer{
+    background: url({{img.url}}) center/cover no-repeat;
+}
+#offer .row{
+    min-height: 60vh;
+}
+
+</style>
+
+<section id = "offer" class = "py-5">
+    <div class = "container">
+        <div class = "row d-flex align-items-center justify-content-center text-center justify-content-lg-start text-lg-start">
+            <div class = "offers-content col-6">
+                <span class = "text-white">{{value.paragraph}}</span>
+                {% for link in value.link %}
+                    <a href = "{{link.url}}" class = "btn">{{link.text}}</a>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+{% else %}
+
+<section id = "about" class = "py-5">
+    <div class = "container">
+        <div class = "row gy-lg-5 align-items-center">
+            <div class = "col-lg-6 order-lg-1 text-center text-lg-start">
+                <div class = "title pt-3 pb-5">
+                    <h2 class = "position-relative d-inline-block ms-4">{{value.title}}</h2>
+                </div>
+                {% comment %} <p class = "lead text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis, ipsam.</p> {% endcomment %}
+                <p>{{value.paragraph}}</p>
+            </div>
+            <div class = "col-lg-6 order-lg-0">
+                {% image value.image scale-100 as img %}
+                <img src = "{{img.url}}" alt = "" class = "img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

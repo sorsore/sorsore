@@ -1,8 +1,0 @@
-v0.16.1 release notes
-=====================
-
-
-Bug fixes
----------
-
-* Fix bug in AMP page template that causes 500 error.

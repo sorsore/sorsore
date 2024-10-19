@@ -1,0 +1,94 @@
+{% extends "wagtailadmin/base.html" %}
+{% block titletag %} Themes Settings {% endblock %}
+
+{% block content %}
+    {% include "wagtailadmin/shared/header.html" with title="Themes Settings" icon="cog" %}
+
+
+    {% comment %} <div class="nice-padding">
+        <form action = "" method = "post">
+            {% csrf_token %}
+            <h2>you can change your template here</h2>
+            <hr>
+            {{ temp_form.as_p }}
+            <hr>
+            <h2>select homepages for use(you can use multy homepage for your site)</h2>
+            {{index_form.management_form}}
+            
+            <table>
+            {% for form in index_form %}
+                <tr>
+                    <td>{{form.name}}</td>
+                    <td>{{form.in_use}}</td>
+                </tr>
+            {% endfor %}
+            <table>
+            <hr>
+            <input type="submit" value="Submit">
+        </form>
+    
+    </div> {% endcomment %}
+
+    <div class="nice-padding">
+        <form action = "" method = "post">
+            {% csrf_token %}
+            <h2>you can change your template here</h2>
+            <hr>
+            {{template_form.template_name.label_tag}} {{template_form.template_name}}
+            <hr>
+            <h2>select homepages for use(you can use multy homepage for your site)</h2>
+            <hr>
+            <label for="indexes">Indexes: </label>
+            {% if theme_type.name == 'None' %}
+                <select id="indexes" name="indexes" disabled>
+                <option value='None'>None</option>
+                {% for index in indexes %}  
+                    {% if index.in_use %}
+                        <option value={{index.name}} selected>{{ index.name }}</option>
+                    {% else %}
+                        <option value={{index.name}}>{{ index.name }}</option>
+                    {% endif %}
+                {% endfor %}  
+                </select>
+            {% else %}
+                <select id="indexes" name="indexes">
+                    <option value='None'>None</option>
+                {% for index in indexes %}  
+                    {% if index.in_use %}
+                        <option value={{index.name}} selected>{{ index.name }}</option>
+                    {% else %}
+                        <option value={{index.name}}>{{ index.name }}</option>
+                    {% endif %}
+                {% endfor %}  
+                </select>
+            {% endif %}
+
+            <hr>
+            <input type="submit" value="Submit">
+        </form>
+    
+    </div>
+    
+{% endblock %}
+
+
+
+
+
+
+
+
+{% comment %} <div class="nice-padding">
+    <h2>select homepages for use (you can use multiple homepages for your site)</h2>
+    <hr>
+        <form action = "" method = "post">
+            {% csrf_token %}
+            {% for item in indexes %}
+                <span>{{item.name}}</span>
+                <input type="checkbox" name="in_use_{{item.id}}" {% if item.in_use %}checked{% endif %}>
+                <br>
+            {% endfor %}
+            <input type="submit" value="Submit">
+        </form>
+    <hr>
+    </div> {% endcomment %}

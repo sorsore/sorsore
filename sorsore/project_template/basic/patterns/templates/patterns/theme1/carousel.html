@@ -1,0 +1,74 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% image value.image scale-100 as img %}
+{% block stylesheets %}
+<style>
+
+#header1{
+    background: url({{img.url}}) center/cover no-repeat;
+}
+
+</style>
+{% endblock stylesheets %}
+
+
+<header id = "header1" class = "vh-100 carousel slide" data-bs-ride = "carousel" style = "padding-top: 104px;">
+    
+    <div class = "container h-100 d-flex align-items-center carousel-inner">
+        {% for slide in value.slides %}
+        {% if slide.is_active %}
+            <div class = "text-center carousel-item active">
+                {% for texts in slide.text %}
+                {% if texts.kind == "h1" %}
+                    <h1 class = "text-uppercase py-2 fw-bold text-white">{{texts.text}}</h1>
+                {% else %}
+                    <h2 class = "text-capitalize text-white">{{texts.text}}</h2>
+                {% endif %}
+                {% endfor %}
+                {% for button in slide.button_text %}
+                    <a href = "{{slide.url}}" class = "btn mt-3 text-uppercase">{{button}}</a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class = "text-center carousel-item">
+                {% for texts in slide.text %}
+                {% if texts.kind == "h1" %}
+                    <h1 class = "text-uppercase py-2 fw-bold text-white">{{texts.text}}</h1>
+                {% else %}
+                    <h2 class = "text-capitalize text-white">{{texts.text}}</h2>
+                {% endif %}
+                {% endfor %}
+                {% for button in slide.button_text %}
+                    <a href = "{{slide.url}}" class = "btn mt-3 text-uppercase">{{button}}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+            
+        {% endfor %}
+        {% comment %} <div class = "text-center carousel-item active">
+            <h2 class = "text-capitalize text-white">best collection</h2>
+            <h1 class = "text-uppercase py-2 fw-bold text-white">new arrivals</h1>
+            
+            <a href = "#" class = "btn mt-3 text-uppercase">value.name</a>
+        </div>
+        <div class = "text-center carousel-item">
+            <h2 class = "text-capitalize text-white">best price & offer</h2>
+            <h1 class = "text-uppercase py-2 fw-bold text-white">new season</h1>
+            <a href = "#" class = "btn mt-3 text-uppercase">buy now</a>
+        </div> {% endcomment %}
+    </div>
+
+    <button class = "carousel-control-prev" type = "button" data-bs-target="#header1" data-bs-slide = "prev">
+        <span class = "carousel-control-prev-icon"></span>
+    </button>
+    <button class = "carousel-control-next" type = "button" data-bs-target="#header1" data-bs-slide = "next">
+        <span class = "carousel-control-next-icon"></span>
+    </button>
+</header>
+
+{% comment %} what must do in model of carousel:
+1- add a choice to the list text of the carousel
+2- add a boolean to slide for detect the active slide(some slides can't be active)
+3- add image for every slide(this is for last work) {% endcomment %}
+
+
