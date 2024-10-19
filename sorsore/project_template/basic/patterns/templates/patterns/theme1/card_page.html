@@ -1,0 +1,79 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% load static %}
+{% if value.card_type == "type1" %}
+
+    <section id = "collection" class = "py-5">
+        <div class = "container">
+            <div class = "title text-center">
+                <h2 class = "position-relative d-inline-block">{{value.title}}</h2>
+            </div>
+
+            <div class = "row g-0">
+                {% comment %} <div class = "d-flex flex-wrap justify-content-center mt-5 filter-button-group">
+                    <button type = "button" class = "btn m-2 text-dark active-filter-btn" data-filter = "*">All</button>
+                    <button type = "button" class = "btn m-2 text-dark" data-filter = ".best">Best Sellers</button>
+                    <button type = "button" class = "btn m-2 text-dark" data-filter = ".feat">Featured</button>
+                    <button type = "button" class = "btn m-2 text-dark" data-filter = ".new">New Arrival</button>
+                </div> {% endcomment %}
+
+                <div class = "container-fluid mt-4 row row-cols-auto gx-0 gy-3">
+                    {% for page in pages %}
+                        <div class = "col-md-6 col-lg-4 col-xl-3 p-2 best position-relative" style="width:320px;">
+                            <div class = "collection-img position-relative">
+                            {% image page.cover_image scale-100 as img %}
+                                <img src = "{{img.url}}" width="316px" height="315px">
+                                {% comment %} <span class = "position-absolute bg-primary text-white d-flex align-items-center justify-content-center">sale</span> {% endcomment %}
+                            </div>
+                            <div class = "text-center">
+                                <div class = "rating mt-3">
+                                    <span class = "text-primary"><i class = "fas fa-star"></i></span>
+                                    <span class = "text-primary"><i class = "fas fa-star"></i></span>
+                                    <span class = "text-primary"><i class = "fas fa-star"></i></span>
+                                    <span class = "text-primary"><i class = "fas fa-star"></i></span>
+                                    <span class = "text-primary"><i class = "fas fa-star"></i></span>
+                                </div>
+                                <p class = "text-capitalize my-1">{{page.title}}</p>
+                                <span class = "fw-bold">$ {{page.author}}</span>
+                            </div>
+                            <a class="w-100 stretched-link" href="{{ page.url }}"></a>
+                        </div>
+                    {% endfor %}
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% else %}
+    <section id = "blogs" class = "py-5">
+        <div class = "container">
+            <div class = "title text-center py-5">
+                <h2 class = "position-relative d-inline-block">{{value.title}}</h2>
+            </div>
+            <div class = "row g-3">
+            {% for page in pages %}
+                <div class = "card border-0 col-md-6 col-lg-4 bg-transparent my-3">
+                    {% if page.cover_image %}
+                        {% image page.cover_image scale-100 as img %}
+                        <img src = "{{img.url}}" alt = "{{page.title}}" width="400px" height="290px" >
+                    {% else %}
+                        <img src = "{% static 'themes/theme1/images/noneimage.png' %}" alt = "{{page.title}}" width="400px" height="290px">
+                    {% endif %}
+                    
+                    <div class = "card-body px-0">
+                        <h4 class = "card-title">{{page.title}}</h4>
+                        <p class = "card-text mt-3 text-muted">{{page.caption}}</p>
+                        {% comment %} <p class = "card-text">
+                            <small class = "text-muted">
+                                <span class = "fw-bold">Author: </span>John Doe
+                            </small>
+                        </p> {% endcomment %}
+                        <a href = "{{page.url}}" class = "btn">{{value.button_text}}</a>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}

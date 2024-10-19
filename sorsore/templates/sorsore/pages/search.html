@@ -1,0 +1,86 @@
+{% extends "sorsore/pages/web_page_notitle.html" %}
+{% load django_bootstrap5 i18n sorsore_tags wagtailcore_tags %}
+
+{% wagtail_site as site %}
+
+{% block extra_head %}
+<title>{% if not form.s.value %}{% trans 'Search' %}{% else %}{% trans 'Search for' %} “{{form.s.value}}”{% endif %} — {{ site.site_name }}</title>
+{{ block.super }}
+{% endblock %}
+
+{% block content_pre_body %}
+<div class="container my-5">
+  {% if not form.s.value %}
+  <h1>{% trans 'Search' %}</h1>
+  {% else %}
+  <h1>{% trans 'Search for' %} “{{form.s.value}}”</h1>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block content_body %}
+<div class="container">
+  {% block search_form %}
+  {% if not settings.sorsore.LayoutSettings.navbar_search %}
+  <form class="mt-5" action="{% url 'crx_search' %}" method="GET">
+    <div class="row">
+      <div class="col-8 col-sm-9">
+        {% bootstrap_form form size="lg" layout="inline" server_side_validation=False %}
+      </div>
+      <div class="col-4 col-sm-3">
+        <button class="btn btn-lg w-100 btn-outline-primary" type="submit">{% trans "Search" %}</button>
+      </div>
+    </div>
+  </form>
+  {% endif %}
+  {% endblock search_form %}
+
+  {% block search_page_types %}
+  {% if pagetypes %}
+  {% query_update request.GET 'p' None as qs_nop %}
+  <div class="mt-5">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        {% query_update qs_nop 't' None as qs_t %}
+        <a class="nav-link {% if not form.t.value %}active{% endif %}" href="?{{qs_t.urlencode}}">{% trans 'All Results' %}</a>
+      </li>
+      {% for pt in pagetypes %}
+      <li class="nav-item">
+        {% query_update qs_nop 't' pt.content_type.model as qs_t %}
+        <a class="nav-link {% if form.t.value == pt.content_type.model %}active{% endif %}" href="?{{qs_t.urlencode}}">{{pt|get_plural_name_of_class}}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  {% endblock search_page_types %}
+
+  <hr class="mb-5">
+
+  {% if results_paginated.object_list %}
+
+  {% block search_results %}
+  {% for page in results_paginated %}
+  <div class="mb-5">
+    {% with page=page.specific %}
+    {% if page.search_template %}
+    {% include page.search_template %}
+    {% else %}
+    {% include "sorsore/pages/search_result.html" %}
+    {% endif %}
+    {% endwith %}
+  </div>
+  {% endfor %}
+  {% include "sorsore/includes/pagination.html" with items=results_paginated %}
+  {% endblock search_results %}
+
+  {% elif form.s.value %}
+
+  {% block search_noresults %}
+  <p>{% trans "No results found." %}</p>
+  {% endblock search_noresults %}
+
+  {% endif %}
+
+</div>
+{% endblock %}

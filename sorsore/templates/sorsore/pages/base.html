@@ -1,0 +1,199 @@
+{% load sorsore_tags i18n static wagtailcore_tags wagtailimages_tags wagtailsettings_tags wagtailuserbar %}
+{% get_settings %}
+{% get_current_language as LANGUAGE_CODE %}
+{% wagtail_site as site %}
+<!doctype html>
+<html prefix="og: http://ogp.me/ns#" lang="{{ LANGUAGE_CODE }}">
+
+<head>
+  {% block tracking %}
+  {% if settings.sorsore.AnalyticsSettings.ga_g_tracking_id %}
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{settings.sorsore.AnalyticsSettings.ga_g_tracking_id}}"></script>
+  <script>
+    cr_track_clicks = {{settings.sorsore.AnalyticsSettings.ga_track_button_clicks|yesno:"true,false"}};
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{settings.sorsore.AnalyticsSettings.ga_g_tracking_id}}');
+  </script>
+  {% endif %}
+  {% if settings.sorsore.AnalyticsSettings.gtm_id %}
+  <!-- Google Tag Manager -->
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','{{settings.sorsore.AnalyticsSettings.gtm_id}}');
+  </script>
+  <!-- End Google Tag Manager -->
+  {% endif %}
+  {% if settings.sorsore.AnalyticsSettings.head_scripts %}
+  {{settings.sorsore.AnalyticsSettings.head_scripts|safe}}
+  {% endif %}
+  {% endblock %}
+
+  {# Pass in CMS variables to JavaScript #}
+  <script>
+    cr_site_url = "{{site.root_url}}";
+    cr_external_new_tab = {{settings.sorsore.LayoutSettings.external_new_tab|yesno:"true,false"}};
+    cr_version = "{% sorsore_version %}";
+  </script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {# SEO Metadata #}
+  {% include "wagtailseo/meta.html" %}
+
+  {% block frontend_assets %}
+  {% if settings.sorsore.LayoutSettings.frontend_theme %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/{{settings.sorsore.LayoutSettings.frontend_theme}}/bootstrap.min.css">
+  {% else %}
+  <link rel="stylesheet" href="{% static 'sorsore/vendor/bootstrap/dist/css/bootstrap.min.css' %}?v={% sorsore_version %}">
+  {% endif %}
+  {% endblock %}
+
+  {% block sorsore_assets %}
+  {% if "DEBUG"|django_settings %}
+  <link rel="stylesheet" href="{% static 'sorsore/css/crx-front.css' %}?v={% sorsore_version %}">
+  {% else %}
+  <link rel="stylesheet" href="{% static 'sorsore/css/crx-front.min.css' %}?v={% sorsore_version %}">
+  {% endif %}
+  {% endblock %}
+
+  {% block custom_assets %}{% endblock %}
+
+  {% block favicon %}
+  {% if settings.sorsore.LayoutSettings.favicon %}
+  {# See https://developer.apple.com/design/human-interface-guidelines/ios/icons-and-images/app-icon/ #}
+  {% image settings.sorsore.LayoutSettings.favicon fill-256x256 format-webp preserve-svg as favicon_webp %}
+  {% image settings.sorsore.LayoutSettings.favicon fill-120x120 format-png preserve-svg as favicon_iphone %}
+  {% image settings.sorsore.LayoutSettings.favicon fill-180x180 format-png preserve-svg as favicon_iphone_plus %}
+  {% image settings.sorsore.LayoutSettings.favicon fill-152x152 format-png preserve-svg as favicon_ipad %}
+  {% image settings.sorsore.LayoutSettings.favicon fill-167x167 format-png preserve-svg as favicon_ipad_pro %}
+  <link rel="icon" type="image/webp" href="{{ favicon_webp.url }}">
+  <link rel="apple-touch-icon" href="{{ favicon_iphone_plus.url }}">
+  <link rel="apple-touch-icon" sizes="120x120" href="{{ favicon_iphone.url }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ favicon_iphone_plus.url }}">
+  <link rel="apple-touch-icon" sizes="152x152" href="{{ favicon_ipad.url }}">
+  <link rel="apple-touch-icon" sizes="167x167" href="{{ favicon_ipad_pro.url }}">
+  {% endif %}
+  {% endblock %}
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body class="crx-{{page.content_type.model}} {% if page.get_parent %}parent-page-{{page.get_parent.id}}{% endif %} {% block body_class %}{% endblock %}" id="page-{{page.id}}">
+  {% include "sorsore/includes/crx_banner.html" %}
+
+  {% block ada_skip %}
+  <a class="visually-hidden-focusable" href="#content">Skip navigation</a>
+  {% endblock %}
+
+  {% wagtailuserbar %}
+
+  {% block navbar %}{% endblock %}
+
+  <div id="content">
+    {% block content %}
+    {% block messages %}
+    {% if messages %}
+    <div class="container">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags|map_to_bootstrap_alert }}" role="alert">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endblock %}
+    {% block content_pre_body %}{% endblock %}
+
+    {% block content_body %}
+    {% for block in page.body %}
+    {% include_block block with settings=settings %}
+    {% endfor %}
+    {% endblock %}
+
+    {% block content_post_body %}{% endblock %}
+
+    {% block index_filters %}
+    <div class="container">
+      {% if page.index_show_subpages and page.index_classifiers.exists %}
+      {% include "sorsore/includes/classifier_dropdowns.html" with formclass="d-flex" formid="filter" %}
+      {% endif %}
+    </div>
+    {% endblock %}
+
+    {% block index_content %}
+    {% if page.index_show_subpages %}
+    <div class="container">
+      <div class="row">
+        {% for child in index_paginated %}
+        <div class="col-sm-6 col-lg-4">
+          {% include child.miniview_template with page=child %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% include "sorsore/includes/pagination.html" with items=index_paginated %}
+    {% endif %}
+    {% endblock %}
+
+    {% block related_content %}
+    {% if page.related_show %}
+    <div class="container">
+      <h2 class="text-center my-5">{% trans "Related" %}</h2>
+      <div class="row">
+        {% for rp in related_pages %}
+        <div class="col-sm-6 col-lg-4">
+          {% include rp.miniview_template with page=rp %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    {% endblock %}
+
+    {% endblock %}
+  </div>
+
+  <div id="content-walls">
+    {% block content_walls %}
+    {% for content_wall in content_walls %}
+    {% include_block content_wall with settings=settings %}
+    {% endfor %}
+    {% endblock %}
+  </div>
+
+  {% block footer %}{% endblock %}
+
+  {% block frontend_scripts %}
+  <script src="{% static 'sorsore/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}?v={% sorsore_version %}"></script>
+  {% endblock %}
+
+  {% block sorsore_scripts %}
+  <script src="{% static 'sorsore/js/crx-front.js' %}?v={% sorsore_version %}"></script>
+  {% endblock %}
+
+  {% block custom_scripts %}{% endblock %}
+
+  {% block struct_seo %}
+    {% include "wagtailseo/struct_data.html" %}
+    {% block struct_seo_extra %}{% endblock %}
+  {% endblock %}
+
+  {% block body_tracking_scripts %}
+  {% if settings.sorsore.AnalyticsSettings.gtm_id %}
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{settings.sorsore.AnalyticsSettings.gtm_id}}"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  {% endif %}
+  {% if settings.sorsore.AnalyticsSettings.body_scripts %}
+  {{settings.sorsore.AnalyticsSettings.body_scripts|safe}}
+  {% endif %}
+  {% endblock %}
+</body>
+
+</html>

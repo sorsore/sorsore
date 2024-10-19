@@ -1,0 +1,45 @@
+{% extends "sorsore/pages/web_page.html" %}
+
+{% load wagtailadmin_tags wagtailcore_tags wagtailimages_tags sorsore_tags %}
+
+{% block content %}
+<article class="crx-article">
+  {% block article_header %}
+  <div class="container my-4 text-center">
+    <h1>{{ self.title }}</h1>
+    {% if self.caption %}
+    <p class="lead">{{self.caption}}</p>
+    {% endif %}
+    <p>
+      {% if self.author %}
+      <img class="article-author-img rounded-circle me-2" src="{% avatar_url self.author %}">
+      {% endif %}
+      {% if self.seo_author %}
+      <span class="article-author">{{self.seo_author}}</span>
+      <span class="mx-2">&bull;</span>
+      {% endif %}
+      <span class="article-date">{{ self.seo_published_at }}</span>
+    </p>
+  </div>
+  {% endblock %}
+  {% block article_cover_image %}
+  {% if self.cover_image %}
+  <div class="container mb-5">
+    {% image self.cover_image fill-1600x900 format-webp preserve-svg as cover_image %}
+    <img src="{{cover_image.url}}" class="w-100">
+  </div>
+  {% endif %}
+  {% endblock %}
+  {% block article_body %}
+  <div class="container mx-auto article-body">
+    {% for block in self.body %}
+    {% include_block block with settings=settings %}
+    {% endfor %}
+  </div>
+  {% endblock %}
+
+  {% block related_content %}
+  {{ block.super }}
+  {% endblock %}
+</article>
+{% endblock %}

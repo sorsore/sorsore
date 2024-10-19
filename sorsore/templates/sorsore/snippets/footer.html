@@ -1,0 +1,26 @@
+{% load wagtailcore_tags sorsore_tags themes_tags %}
+
+{% theme_type as footer_type %}
+{% if footer_type == 'None' %}
+
+{% if settings.sorsore.LayoutSettings.site_footer %}
+<footer>
+  {% get_footers as footers %}
+  {% for footer in footers %}
+  <div {% if footer.custom_id %}id="{{footer.custom_id}}"{% endif %} {% if footer.custom_css_class %}class="{{footer.custom_css_class}}"{% endif %}>
+    {% for item in footer.content %}
+    {% include_block item with settings=settings %}
+    {% endfor %}
+  </div>
+  {% endfor %}
+</footer>
+{% endif %}
+
+
+{% else %}
+
+{% block footer %}
+    {% foters %}
+{% endblock  %}
+
+{% endif %}

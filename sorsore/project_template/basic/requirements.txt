@@ -1,0 +1,2 @@
+sorsore=={{sorsore_release.0}}.{{sorsore_release.1}}.*
+wagtail=={{wagtail_release.0}}.{{wagtail_release.1}}.*

@@ -15,7 +15,7 @@ Push-Location $projectDir
 $ExitCode = 0
 
 # Run unit tests.
-pytest coderedcms/
+pytest sorsore/
 $ExitCode = $LastExitCode
 
 # Print code coverage if succeeded.
