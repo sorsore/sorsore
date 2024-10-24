@@ -136,9 +136,10 @@ Please Install python on yout os
 For install sorsore just use pip:
 
 1. pip install sorsore
-2. use sorsore cli
-4. sorsore create site
-5. sorsore run
+2. sorsore start project
+4. cd project
+5. python3 manage.py migrate
+6. enjoy from sorsore
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
