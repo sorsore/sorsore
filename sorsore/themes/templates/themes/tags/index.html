@@ -7,8 +7,7 @@
 
 {% for item in index %}
 
-{% theme_type as index_type %}
-{% if item.in_use and index_type != 'None' %}
+{% if settings.sorsore.LayoutSettings.choose_template != 'None' %}
 
 {% for block in item.body %}
 

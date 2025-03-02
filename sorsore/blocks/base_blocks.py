@@ -154,6 +154,11 @@ class CoderedAdvSettings(blocks.StructBlock):
         label=_("Custom ID"),
     )
 
+    custom_style = blocks.TextBlock(
+        required=False,
+        label=_("Custom Style"),
+    )
+
     class Meta:
         form_template = (
             "wagtailadmin/block_forms/base_block_settings_struct.html"

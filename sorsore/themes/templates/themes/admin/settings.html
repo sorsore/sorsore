@@ -4,7 +4,7 @@
 {% block content %}
     {% include "wagtailadmin/shared/header.html" with title="Themes Settings" icon="cog" %}
 
-
+    <h1>your template settings is here</h1>
     {% comment %} <div class="nice-padding">
         <form action = "" method = "post">
             {% csrf_token %}
@@ -29,7 +29,7 @@
     
     </div> {% endcomment %}
 
-    <div class="nice-padding">
+    {% comment %} <div class="nice-padding">
         <form action = "" method = "post">
             {% csrf_token %}
             <h2>you can change your template here</h2>
@@ -68,8 +68,8 @@
         </form>
     
     </div>
-    
-{% endblock %}
+{% endcomment %}
+{% endblock %} 
 
 
 

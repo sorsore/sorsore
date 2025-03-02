@@ -1,5 +1,6 @@
 <div class="ratio ratio-16x9 {{self.settings.custom_css_class}}"
-  {% if self.settings.custom_id %}id="{{self.settings.custom_id}}"{% endif %}>
+  {% if self.settings.custom_id %}id="{{self.settings.custom_id}}"{% endif %}
+  style="{{self.settings.custom_style}}">
   {% if self.place_id %}
   <iframe src="https://www.google.com/maps/embed/v1/place?q=place_id:{{ self.place_id }}&zoom={{ self.map_zoom_level }}&key={{ settings.sorsore.LayoutSettings.google_maps_api_key}}" title="{{self.map_title}}" allowfullscreen></iframe>
   {% else %}

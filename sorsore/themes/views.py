@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from wagtail.admin.viewsets.model import ModelViewSet
 
-from .models import Index
+# from .models import Index
 from .model_theme import TemplateSettings
-from .forms import GetTemplatesForm
+# from .forms import GetTemplatesForm
 # from wagtail.images import get_image_model
 # from django.core.files import File
 # from django.core.files.base import ContentFile
@@ -29,52 +29,7 @@ def find(my_dict,string):
     return num
 # settings of themes
 def settings(request):
-    template_instance = TemplateSettings.objects.first()
-    all_indexes = Index.objects.all()
-    queryset = Index.objects.all()
-
-    if request.method == 'POST':
-        
-        index_name = request.POST.get("indexes")
-        template_form = GetTemplatesForm(request.POST)
-
-
-        if  template_form.is_valid():
-            if all_indexes and template_instance.name != 'None':
-                active = Index.objects.filter(in_use=True).first()
-                if active:
-                    active.in_use = False
-                    active.save()
-                if index_name != 'None':
-                    ready_to_active = get_object_or_404(Index, name=index_name)
-                    ready_to_active.in_use = True
-                    ready_to_active.save()
-
-            data = template_form.cleaned_data
-            if template_instance:
-                template_instance.name = data["template_name"]
-                template_instance.save()
-            else:
-                if data["template_name"] != 'None':
-                    TemplateSettings.objects.create(name=data["template_name"])
-
-            return redirect("/admin")
-    else:
-        if  template_instance:
-            template_form = GetTemplatesForm(initial={'template_name': template_instance.name})
-        else:
-            template_form = GetTemplatesForm(initial={'template_name': 'None'})
-
-    
-    context = {
-        'template_form' : template_form,
-        'indexes': queryset,
-        'theme_type': template_instance,
-    }
-    
-        
-    
-    return render(request, "themes/admin/settings.html", context)
+    return render(request, "themes/admin/settings.html")
 
 
 # download new themes

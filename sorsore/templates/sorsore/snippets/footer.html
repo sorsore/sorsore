@@ -1,7 +1,6 @@
-{% load wagtailcore_tags sorsore_tags themes_tags %}
+{% load wagtailcore_tags wagtailsettings_tags sorsore_tags themes_tags %}
 
-{% theme_type as footer_type %}
-{% if footer_type == 'None' %}
+{% if settings.sorsore.LayoutSettings.choose_template == 'None' %}
 
 {% if settings.sorsore.LayoutSettings.site_footer %}
 <footer>

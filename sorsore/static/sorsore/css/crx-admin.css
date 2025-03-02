@@ -1,11 +1,21 @@
 /*!
-Wagtail CRX (https://www.coderedcorp.com/cms/)
+Sorsore (https://www.sorsore-cms.ir)
 Copyright 2018-2023 CodeRed LLC
-License: https://github.com/coderedcorp/sorsore/blob/main/LICENSE
-*/
+License: https://github.com/sorsore/sorsore
 
 
 /* Font sizes and inputs */
+:root, .w-theme-light{
+  --w-color-grey-600: aliceblue;
+}
+:root, .w-theme-dark{
+  --w-color-grey-600: #455457;
+  --w-color-grey-500: #252A3A;
+  --w-color-grey-400: #EFE6CE;
+  --w-color-grey-200: #EFE6CE;
+  --w-color-grey-150: #EFE6CE;
+  --w-color-secondary-100: #ecded8;
+}
 
 code,
 pre,
@@ -20,6 +30,10 @@ textarea.monospace,
   height: 40px;
   padding: 5px;
 }
+/* 
+.w-theme-dark{
+  background-color: var(--w-color-grey-800);
+} */
 
 
 /* Show the site's custom logo in the wagtail admin */
@@ -96,3 +110,13 @@ textarea.monospace,
   font-size: 5rem;
   color: var(--w-color-text-label);
 }
+
+
+
+/* 842629
+E86F37
+EFE6CE
+748C92
+252A3A
+
+first color themes for dark mode*/

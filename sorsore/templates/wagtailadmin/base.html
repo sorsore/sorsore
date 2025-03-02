@@ -1,11 +1,15 @@
 {% extends "wagtailadmin/base.html" %}
-{% load wagtailimages_tags wagtailsettings_tags %}
+{% load wagtailimages_tags wagtailsettings_tags static %}
 
 {% block furniture %}
     {% include "sorsore/includes/crx_banner.html" %}
     {{ block.super }}
 {% endblock %}
-
 {# NOTE: this must be on a single line, otherwise Django templates will create
   whitespace, and wagtail will think the whitespace is the custom logo! #}
-{% block branding_logo %}{% if settings.sorsore.LayoutSettings.logo %}<div class="crx-logo-container {{settings.sorsore.LayoutSettings.navbar_color_scheme}}">{% image settings.sorsore.LayoutSettings.logo original format-webp preserve-svg as logo_image %}<img src="{{ logo_image.url }}" class="crx-logo-custom" alt="Dashboard"></div>{% endif %}{% endblock %}
+{% block branding_logo %}{% if settings.sorsore.LayoutSettings.logo %}<div class="crx-logo-container {{settings.sorsore.LayoutSettings.navbar_color_scheme}}">{% image settings.sorsore.LayoutSettings.logo original format-webp preserve-svg as logo_image %}<img src="{{ logo_image.url }}" class="crx-logo-custom" alt="Dashboard"></div>{% else %}<div class="crx-logo-container"><img src="{% static 'sorsore/images/logo.png' %}" class="crx-logo-custom" alt="Dashboard" ></div>{% endif %}{% endblock %}
+
+
+
+{% comment %} <span style="font-size: 2.2rem; font-weight: bolder; border: 2px solid #00b0b1; padding: 1rem; margin: 1rem 0; border-radius: 50%">sorsore</span> {% endcomment %}
+

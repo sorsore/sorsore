@@ -102,6 +102,14 @@ class LayoutSettings(ClusterableModel, BaseSiteSetting):
         verbose_name=_("Search box"),
         help_text=_("Show search box in navbar"),
     )
+
+    choose_template = models.CharField(
+        blank= True,
+        max_length=50,
+        choices=None,
+        default=""
+    )
+
     frontend_theme = models.CharField(
         blank=True,
         max_length=50,
@@ -161,6 +169,7 @@ class LayoutSettings(ClusterableModel, BaseSiteSetting):
         ),
         MultiFieldPanel(
             [
+                FieldPanel("choose_template"),
                 FieldPanel("frontend_theme"),
             ],
             heading=_("Theming"),
@@ -202,6 +211,9 @@ class LayoutSettings(ClusterableModel, BaseSiteSetting):
         self._meta.get_field("frontend_theme").choices = (
             crx_settings.CRX_FRONTEND_THEME_CHOICES
         )
+        self._meta.get_field("choose_template").choices = (
+            crx_settings.SORSORE_TEMPLATE_CHOICES
+        )
         self._meta.get_field("navbar_collapse_mode").choices = (
             crx_settings.CRX_FRONTEND_NAVBAR_COLLAPSE_MODE_CHOICES
         )
@@ -214,6 +226,7 @@ class LayoutSettings(ClusterableModel, BaseSiteSetting):
         # Set default dynamically.
         if not self.id:
             self.frontend_theme = crx_settings.CRX_FRONTEND_THEME_DEFAULT
+            self.choose_template = crx_settings.SORSORE_TEMPLATE_DEFAULT
             self.navbar_class = crx_settings.CRX_FRONTEND_NAVBAR_CLASS_DEFAULT
             self.navbar_collapse_mode = (
                 crx_settings.CRX_FRONTEND_NAVBAR_COLLAPSE_MODE_DEFAULT

@@ -77,7 +77,7 @@ class CreateProject(TemplateCommand):
         ]
 
         # Set options
-        message = "Creating a Wagtail CRX project called %(project_name)s"
+        message = "Creating a Sorsore project called %(project_name)s"
 
         if options.get("sitename"):
             message += " for %(sitename)s"

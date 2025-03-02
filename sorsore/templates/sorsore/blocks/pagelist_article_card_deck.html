@@ -2,7 +2,7 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% block block_render %}
-<div class="row {{self.settings.custom_css_class}}">
+<div class="row {{self.settings.custom_css_class}}" style="{{self.settings.custom_style}}">
   <div class="col">
     {% for page in pages %}
     {% with page.specific as article %}

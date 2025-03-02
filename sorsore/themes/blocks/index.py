@@ -1,13 +1,12 @@
 import logging
 
-from wagtail.fields import StreamField, RichTextField
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
 # from sorsore.blocks.base_blocks import ClassifierTermChooserBlock
 
-from sorsore.themes.model_theme import TemplateSettings as Theme
 from sorsore.themes.template_settings import *
+from sorsore.models.wagtailsettings_models import LayoutSettings
 
 
 logger = logging.getLogger("sorsore")
@@ -49,18 +48,30 @@ class CarouselBlock(blocks.StructBlock):
 
     class Meta:
         template = "themes/blocks/carousel.html"
+        form_template = "themes/blocks/forms/carousel.html"
         
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        theme = Theme.objects.first()
+        theme = LayoutSettings.objects.first()
 
 
-        if theme:
-            context["carousel_context"] = f"patterns/{theme}/carousel.html"
+        if theme and theme.choose_template != 'None':
+            context["carousel_context"] = f"patterns/{theme.choose_template}/carousel.html"
         else:
             context["carousel_context"] = f"patterns/theme1/carousel.html"
         
+        return context
+    
+    def get_form_context(self, value, prefix="", errors=None):
+        context = super().get_form_context(value, prefix=prefix, errors=errors)
+        theme = LayoutSettings.objects.first()
+
+        if theme and theme.choose_template != 'None':
+            context["carousel_form_context"] = f"patterns/{theme.choose_template}/forms/carousel.html"
+        else:
+            context["carousel_form_context"] = f"patterns/theme1/forms/carousel.html"
+
         return context
 
 
@@ -84,6 +95,7 @@ class PageCardBlock(blocks.StructBlock):
     class Meta:
         value_class = PageCardLinkStructValue
         template = "themes/blocks/card_page.html"
+        form_template = "themes/blocks/forms/card_page.html"
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -115,19 +127,29 @@ class PageCardBlock(blocks.StructBlock):
             pages = indexer.get_children().live()
         
         all_pages = len(pages)
-        print(all_pages, value["num_posts"])
         if value["num_posts"] <= all_pages:
             context["pages"] = pages[(all_pages - value["num_posts"]):]
         else:
             context["pages"] = pages[:]
 
-        theme = Theme.objects.first()
+        theme = LayoutSettings.objects.first()
 
-        if theme:
-            context["card_page_context"] = f"patterns/{theme}/card_page.html"
+        if theme and theme.choose_template != 'None':
+            context["card_page_context"] = f"patterns/{theme.choose_template}/card_page.html"
         else:
             context["card_page_context"] = f"patterns/theme1/card_page.html"
         
+        return context
+    
+    def get_form_context(self, value, prefix="", errors=None):
+        context = super().get_form_context(value, prefix=prefix, errors=errors)
+        theme = LayoutSettings.objects.first()
+
+        if theme and theme.choose_template != 'None':
+            context["card_page_form_context"] = f"patterns/{theme.choose_template}/forms/card_page.html"
+        else:
+            context["card_page_form_context"] = f"patterns/theme1/forms/card_page.html"
+
         return context
     
 
@@ -146,16 +168,28 @@ class CardBlock(blocks.StructBlock):
     class Meta:
         value_class = LinkStructValue
         template = "themes/blocks/card.html"
+        form_template = "themes/blocks/forms/card.html"
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        theme = Theme.objects.first()
+        theme = LayoutSettings.objects.first()
 
-        if theme:
-            context["card_context"] = f"patterns/{theme}/card.html"
+        if theme and theme.choose_template != 'None':
+            context["card_context"] = f"patterns/{theme.choose_template}/card.html"
         else:
             context["card_context"] = f"patterns/theme1/card.html"
         
+        return context
+    
+    def get_form_context(self, value, prefix="", errors=None):
+        context = super().get_form_context(value, prefix=prefix, errors=errors)
+        theme = LayoutSettings.objects.first()
+
+        if theme and theme.choose_template != 'None':
+            context["card_form_context"] = f"patterns/{theme.choose_template}/forms/card.html"
+        else:
+            context["card_form_context"] = f"patterns/theme1/forms/card.html"
+
         return context
 
 
@@ -170,16 +204,28 @@ class CardListBlock(blocks.StructBlock):
 
     class Meta:
         template = "themes/blocks/card_list.html"
+        form_template = "themes/blocks/forms/card_list.html"
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        theme = Theme.objects.first()
+        theme = LayoutSettings.objects.first()
 
-        if theme:
-            context["card_list_context"] = f"patterns/{theme}/card_list.html"
+        if theme and theme.choose_template != 'None':
+            context["card_list_context"] = f"patterns/{theme.choose_template}/card_list.html"
         else:
             context["card_list_context"] = f"patterns/theme1/card_list.html"
         
+        return context
+    
+    def get_form_context(self, value, prefix="", errors=None):
+        context = super().get_form_context(value, prefix=prefix, errors=errors)
+        theme = LayoutSettings.objects.first()
+
+        if theme and theme.choose_template != 'None':
+            context["card_list_form_context"] = f"patterns/{theme.choose_template}/forms/card_list.html"
+        else:
+            context["card_list_form_context"] = f"patterns/theme1/forms/card_list.html"
+
         return context
 
 
@@ -203,20 +249,26 @@ class OneParagraphBlock(blocks.StructBlock):
 
     class Meta:
         template = "themes/blocks/one_paragraph.html"
+        form_template = "themes/blocks/forms/one_paragraph.html"
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        theme = Theme.objects.first()
+        theme = LayoutSettings.objects.first()
 
-        if theme:
-            context["one_paragraph_context"] = f"patterns/{theme}/one_paragraph.html"
+        if theme and theme.choose_template != 'None':
+            context["one_paragraph_context"] = f"patterns/{theme.choose_template}/one_paragraph.html"
         else:
             context["one_paragraph_context"] = f"patterns/theme1/one_paragraph.html"
         
         return context
-
-
-
     
+    def get_form_context(self, value, prefix="", errors=None):
+        context = super().get_form_context(value, prefix=prefix, errors=errors)
+        theme = LayoutSettings.objects.first()
 
+        if theme and theme.choose_template != 'None':
+            context["one_paragraph_form_context"] = f"patterns/{theme.choose_template}/forms/one_paragraph.html"
+        else:
+            context["one_paragraph_form_context"] = f"patterns/theme1/forms/one_paragraph.html"
 
+        return context

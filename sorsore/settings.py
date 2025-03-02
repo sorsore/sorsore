@@ -112,6 +112,12 @@ class _DefaultSettings:
         ),
     ]
 
+    SORSORE_TEMPLATE_DEFAULT = "None"
+    THEMES_LIST = os.listdir(os.getcwd() + "/patterns/templates/patterns")
+    THEMES = [(i, i) for i in THEMES_LIST]
+    THEMES.insert(0, ("None", "None"))
+    SORSORE_TEMPLATE_CHOICES = THEMES
+
     CRX_FRONTEND_THEME_DEFAULT = ""
     CRX_FRONTEND_THEME_CHOICES = [
         ("", "Default - Classic Bootstrap"),

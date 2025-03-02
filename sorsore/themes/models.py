@@ -5,7 +5,6 @@ from wagtail.models import PreviewableMixin
 from wagtail import blocks
 from .blocks.index import CarouselBlock, PageCardBlock, OneParagraphBlock, CardListBlock
 from wagtail.images.blocks import ImageChooserBlock
-from .model_theme import TemplateSettings
 # import template_settings as temp
 
 
@@ -88,21 +87,21 @@ class Foooter(models.Model):
 #         ("carousel", )
 #     ], use_json_field=True)
 
-class Index(PreviewableMixin, models.Model):
-    name = models.CharField(max_length=100, default="index")
-    in_use = models.BooleanField(default=False)
-    body = StreamField([
-        ("carousel", CarouselBlock()),
-        ("page_card_list", PageCardBlock()),
-        ("card_list", CardListBlock()),
-        ("one_paragraph", OneParagraphBlock()),
-    ], use_json_field=True)
+# class Index(PreviewableMixin, models.Model):
+#     name = models.CharField(max_length=100, default="index")
+#     in_use = models.BooleanField(default=False)
+#     body = StreamField([
+#         ("carousel", CarouselBlock()),
+#         ("page_card_list", PageCardBlock()),
+#         ("card_list", CardListBlock()),
+#         ("one_paragraph", OneParagraphBlock()),
+#     ], use_json_field=True)
 
-    def get_preview_template(self, request, mode_name):
-        return "themes/previews/index.html"
+#     def get_preview_template(self, request, mode_name):
+#         return "themes/previews/index.html"
     
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 

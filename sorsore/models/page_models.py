@@ -2249,6 +2249,4 @@ class LandingPage(CoderedWebPage):
         ("one_paragraph", themes_body.OneParagraphBlock()),
     ], use_json_field=True, blank=True, null=True, verbose_name=_("themes body"))
 
-    # def get_context(self, request, *args, **kwargs):
-    #     context = super().get_context(request)
-    #     context["theme_type"] = ThemesType
+    
